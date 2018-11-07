@@ -1,5 +1,7 @@
 package com.pearl.resource;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
@@ -21,7 +23,10 @@ public class ResourceController {
 	@Autowired
 	RestTemplateBuilder restTemplateBuilder;
 	
-	@GetMapping("/")
+	@Inject
+	RestTemplate restTemplate;
+	
+	@GetMapping("/builder")
 	public String getResource() {
 		
 		
@@ -34,6 +39,12 @@ public class ResourceController {
 		
 		
 		return response.getBody();
+	}
+	
+	
+	@GetMapping
+	public String getHealth() {
+		return restTemplate.getForEntity("http://simspro-service/actuator/health", String.class).getBody();
 	}
 
 }
